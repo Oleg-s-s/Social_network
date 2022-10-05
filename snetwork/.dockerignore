@@ -1,0 +1,7 @@
+logs/
+.venv
+.gitignore
+.git
+.cache
+*.md
+**/*.class

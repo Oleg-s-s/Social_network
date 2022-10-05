@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="column">
+        <p class="subtitle is-4">
+            <form action="{% url 'network:like' post.id %}" method="POST" style="opacity: 0.8;">
+                {{post.body}}
+                ----------
+                {% csrf_token %}
+                {% if post_is_liked %}
+                    <button type="submit" name="post_id" value="{{post.id}}" class="button is-info is-small">Unlike</button>
+                {% else %}
+                    <button type="submit" name="post_id" value="{{post.id}}" class="button is-info is-small">Like</button>
+                {% endif %}
+                ({{ number_of_likes }} Like{{ number_of_likes|pluralize }})
+            </form>
+        </p>
+        
+        {% for comment in comments %}
+            <div class="box" style="opacity: 0.8;">
+                {{comment.text}}
+                <span class="is-small has-text-grey-light">
+                    {{ comment.created_at }} by {{ comment.user.username }}
+                </span>
+                <form action="{% url 'network:delete_comment' post.id comment.id%}" method="POST">
+                    {% csrf_token %}
+                    {% if comment.user.id == user.id %}
+                        <button type="submit" class="button is-danger is-small">delete comment</button>
+                    {% endif %}
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="column is-one-third">
+
+        <div class="block">
+            <a href="{% url 'network:profile_list' %} ">
+                <button class="button is-dark is-outlined is-fullwidth">
+                    All Profiles
+                </button>
+            </a>
+        </div>
+    
+        <div class="block">
+            <a href="{% url 'network:profile' request.user.profile.id %} ">
+                <button class="button is-info is-dark is-outlined is-fullwidth">
+                    My Profile
+                </button>
+            </a>
+        </div>
+
+        <div class="block" style="opacity: 0.8;">
+            <div class="block">
+                <h2 class="title is-2">Add a Comment</p>
+            </div>
+            <div class="block">
+                <form method="post" action="{% url 'network:post' post.id %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="button is-info is-fullwidth is-medium mt-5"
+                            type="submit">submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    
+    </div>
+
+{% endblock content %}

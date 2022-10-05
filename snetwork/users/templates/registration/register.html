@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form method="post" action="/auth/register/" align="center" style="margin-left: 25%; opacity: 0.8;">
+        <p>
+            <label for="id_username">Username</label>
+            <br>
+            <input type="text" name="username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus="" required="" id="id_username" class="input is-info">
+            <br>
+            <span class="helptext is-small has-text-grey-light" >Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.</spa>
+        </p>
+        <p>
+            <label for="id_password1">Password</label>
+            <br>
+            <input type="password" name="password1" autocomplete="new-password" required="" id="id_password1" class="input is-info">
+            
+            <span class="helptext"></span>
+        </p>
+        <ul>
+            <li class="is-small has-text-grey-light">Your password can’t be too similar to your other personal information.</li>
+            <li class="is-small has-text-grey-light">Your password must contain at least 8 characters.</li>
+            <li class="is-small has-text-grey-light">Your password can’t be a commonly used password.</li>
+            <li class="is-small has-text-grey-light">Your password can’t be entirely numeric.</li>
+        </ul>
+        <p></p>
+        <p>
+            <label for="id_password2">Password confirmation</label>
+            <br>
+            <input type="password" name="password2" autocomplete="new-password" required="" id="id_password2" class="input is-info">
+            
+            <span class="helptext is-small has-text-grey-light">Enter the same password as before, for verification.</span>
+        </p>
+        <button name="submit" class="button is-info">register</button>
+        <input type="hidden" name="next" value="/dashboard/">
+    </form>
+    
+{% endblock content %}

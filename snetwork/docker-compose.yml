@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14.5
+    environment:
+      POSTGRES_DB: "Social_network"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "12345"
+    ports:
+      - 5432:5432
+
+  web:
+    build: .
+    command: python /usr/src/snetwork/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/snetwork
+    ports:
+      - 8000:8000
+    depends_on:
+      - db

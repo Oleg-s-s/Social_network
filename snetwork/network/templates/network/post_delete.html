@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <form method="post" style="opacity: 0.8;">
+        {% csrf_token %}
+
+        <p class="has-text-danger is-size-2">delete "{{ object.body }}"?</p>
+
+        <input type="submit" value="Confirm" class="tag is-danger is-size-4">
+
+
+    </form>
+
+{% endblock content %}

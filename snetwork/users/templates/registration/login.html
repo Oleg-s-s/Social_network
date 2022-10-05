@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block content %}
+
+    <div style="margin-left: 40%; opacity: 0.8;" align="center">
+        <form method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+                <button name="submit" class="btn btn-primary">Log in</button>
+            {% endbuttons %}
+            <input type="hidden" name="next" value="{% url 'network:dashboard' 1 %}" />
+        </form>
+    </div>
+
+{% endblock %}

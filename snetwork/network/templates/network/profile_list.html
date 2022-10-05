@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="column" style="opacity: 0.8;">
+    {% for profile in profiles %}
+
+        <div class="block">
+            <div class="card">
+                <a href="{% url 'network:profile' profile.id %}">
+                <div class="card-content">
+                    <div class="media-content">
+                        <p class="title is-4">
+                            {{ profile.user.username }}
+                        </p>
+                    </div>
+                </div>
+                </a>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>
+
+<div class="column is-one-third">
+
+    <div class="block">
+        <a href="{% url 'network:profile_list' %} ">
+            <button class="button is-dark is-outlined is-fullwidth">
+                All Profiles
+            </button>
+        </a>
+    </div>
+
+    <div class="block">
+        <a href="{% url 'network:profile' request.user.profile.id %}">
+            <button class="button is-info is-dark is-outlined is-fullwidth">
+                My Profile
+            </button>
+        </a>
+    </div>
+
+    <div class="block" style="opacity: 0.8;">
+        <div class="block">
+            <h2 class="title is-2">Add a Post</p>
+        </div>
+        <div class="block">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="button is-info is-fullwidth is-medium mt-5"
+                        type="submit">Post
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="column">
+
+    <div class="block">
+    <h1 class="title is-1" style="opacity: 0.8;">
+        {{profile.user.username|upper}}'s Posts
+    </h1>
+    </div>
+    {% if profile.user.id == user.id %}
+        <p>Your profile (づ｡◕‿‿◕｡)づ</p>
+    {% else %}
+        <form method="post" style="opacity: 0.8;">
+            {% csrf_token %}
+            <div class="buttons has-addons">
+            {% if profile in user.profile.follows.all %}
+                <button class="button is-success is-static">Follow</button>
+                <button class="button is-danger" name="follow" value="unfollow">
+                    Unfollow
+                </button>
+            {% else %}
+                <button class="button is-success" name="follow" value="follow">
+                    Follow
+                </button>
+                <button class="button is-danger is-static">Unfollow</button>
+            {% endif %}
+            </div>
+        </form>
+    {% endif %}
+    <br>
+    <div class="content" style="opacity: 0.8;">
+        {% for post in profile.user.posts.all %}
+            <div class="box">
+                {{ post.body }}
+                <span class="is-small has-text-grey-light">
+                    ({{ post.created_at }})
+                    <br>
+                    <a href="{% url 'network:post' post.id %}" class="tag is-info">->check comments</a>
+                    <br>
+                    {% if profile.user.id == user.id %}
+                        <a href="{% url 'network:delete_post' post.id %}" class="tag is-danger">delete post</a>
+                    {% endif %}
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<div class="column is-one-third">
+
+    <div class="block">
+        <a href="{% url 'network:profile_list' %}">
+            <button class="button is-dark is-outlined is-fullwidth">
+                All Profiles
+            </button>
+        </a>
+    </div>
+
+    <div class="block" style="opacity: 0.8;">
+        <h3 class="title is-4">
+            {{profile.user.username}} follows:
+        </h3>
+        <div class="content" style="opacity: 0.8;">
+            <ul>
+            {% for following in profile.follows.all %}
+                {% if following.id != profile.id %}
+                    <li>
+                        <a href="{% url 'network:profile' following.id %}">
+                            {{ following }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="block" style="opacity: 0.8;">
+        <h3 class="title is-4">
+            {{profile.user.username}} is followed by:
+        </h3>
+        <div class="content" style="opacity: 0.8;">
+            <ul>
+            {% for follower in profile.followed_by.all %}
+                {% if follower.id != profile.id %}
+                    <li>
+                        <a href="{% url 'network:profile' follower.id %}">
+                            {{ follower }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

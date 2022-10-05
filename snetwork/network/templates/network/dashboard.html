@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="column">
+    {% for post in page_object %}
+        <div class="box" style="opacity: 0.8;">
+            {{post.body}}
+            <span class="is-small has-text-grey-light">
+                {{ post.created_at }} by {{ post.user.username }} ({{ post.number_of_likes }} Like{{ post.number_of_likes|pluralize }})
+            </span>
+            <br>
+            <a href="{% url 'network:post' post.id %}" class="tag is-info">leave a comment</a>
+        </div>
+    {% endfor %}
+    {% if page_object.has_previous %}
+        <a href="{% url 'network:dashboard' 1 %}">◀◀</a>
+        <a href="{% url 'network:dashboard' page_object.previous_page_number %}">◀</a>
+    {% endif%}
+
+    <a>{{page_object.number}} of {{page_object.paginator.num_pages}}</a>
+
+    {% if page_object.has_next %}
+        <a href="{% url 'network:dashboard' page_object.next_page_number %}">▶</a>
+        <a href="{% url 'network:dashboard' page_object.paginator.num_pages %}">▶▶</a>
+    {% endif%}
+</div>
+
+<div class="column is-one-third">
+
+    <div class="block">
+        <a href="{% url 'network:profile_list' %} ">
+            <button class="button is-dark is-outlined is-fullwidth">
+                All Profiles
+            </button>
+        </a>
+    </div>
+
+    <div class="block">
+        <a href="{% url 'network:profile' request.user.profile.id %}">
+            <button class="button is-info is-dark is-outlined is-fullwidth">
+                My Profile
+            </button>
+        </a>
+    </div>
+
+    <div class="block" style="opacity: 0.8;">
+        <div class="block">
+            <h2 class="title is-2">Add a Post</p>
+        </div>
+        <div class="block">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="button is-info is-fullwidth is-medium mt-5"
+                        type="submit">Post
+                </button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+
